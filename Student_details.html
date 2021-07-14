@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <script src="/ThomasCookTask/library/knockout-3.5.1.js"></script>
+    <script src="/ThomasCookTask/library/jquery.js"></script>
+
+    <title>Document</title>
+    <title>table</title>
+    
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 50%;
+      }
+      th,
+      td {
+        border: 2px solid black;
+        padding: 15px;
+      }
+    </style>
+
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th>Roll No</th>
+          <th>Name</th>
+          <th>Percentage</th>
+        </tr>
+      </thead>
+      <tbody data-bind="foreach: showStudentDetails">
+        <tr>
+          <td data-bind="text: rollno"></td>
+          <td data-bind="text: name"></td>
+          <td data-bind="text: percentage"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div data-bind="visible: Students().length>5">
+      <button data-bind="click: showMore">Show More Students</button>
+    </div>
+
+</div>
+
+    <script>
+      function Student(rollno, name, percentage) 
+      
+      {
+            this.rollno = rollno;
+            this.name = name;
+            this.percentage = percentage;
+      }
+
+      function studentViewModel() 
+      {
+        self = this;
+
+        //Default Five Students
+        self.totalStudentCount = ko.observable(5);
+
+        self.Students = ko.observableArray([
+          new Student(1, "shubham", "80%"),
+          new Student(2, "Rohit", "70%"),
+          new Student(3, "Ankush", "90%"),
+          new Student(4, "Aditya", "70%"),
+          new Student(5, "Jyoti", "75%"),
+          new Student(6, "Pranav", "95%"),
+          // new Student(7, "Sumeet", "80%"),
+          // new Student(8, "Datta", "60%"),
+          // new Student(9, "Ganesh", "70%"),
+          // new Student(10, "Rajesh", "60%"),
+        ])
+
+
+        //Remaining Student Function Call
+        self.showMore=function () 
+        {
+              self.totalStudentCount(this.Students().length);
+        },
+
+
+          self.showStudentDetails = ko.pureComputed(function () 
+          {
+            return self.Students.slice(0, self.totalStudentCount());
+          })
+      }
+
+      ko.applyBindings(new studentViewModel());
+      
+    </script>
+  </body>
+</html>
